@@ -1,0 +1,20 @@
+{
+  "name": "eth-abi-coder-comparison",
+  "description": "Comparing Ethereum ABI coders.",
+  "author": "Ardis Lu <ardis@ardislu.dev> (https://ardislu.dev)",
+  "private": true,
+  "version": "0.1.0",
+  "license": "ISC",
+  "scripts": {
+    "build:ethers": "esbuild src/ethers.js --bundle --minify --format=esm --outfile=dist/vendor-ethers.js",
+    "build:viem": "esbuild src/viem.js --bundle --minify --format=esm --outfile=dist/vendor-viem.js",
+    "build": "npm run build:ethers && npm run build:viem",
+    "start": "ws -d dist"
+  },
+  "devDependencies": {
+    "esbuild": "^0.17.11",
+    "ethers": "^6.0.8",
+    "local-web-server": "^5.3.0",
+    "viem": "^0.1.1"
+  }
+}

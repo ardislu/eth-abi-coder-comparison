@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <title>eth-abi-coder-comparison</title>
+</head>
+
+<body>
+  <header>
+    <h1>eth-abi-coder-comparison</h1>
+  </header>
+
+  <main>
+    <p>Open the DevTools console to view the results.</p>
+  </main>
+
+  <script type="module">
+    import { AbiCoder } from '/vendor-ethers.js';
+    import { encodeAbiParameters, decodeAbiParameters, parseAbiParameters } from '/vendor-viem.js';
+    const ethersCoder = new AbiCoder();
+
+    const tests = [
+      [['uint256', 'bool'], [12345, true]], // Static types
+      [['bytes', 'string'], [`0x${'aa'.repeat(32)}${'bb'.repeat(32)}${'cc'.repeat(32)}${'dd'.repeat(32)}`, 'Hello, world! 😂💯👨‍👩‍👧‍👧']], // Dynamic types
+      [['uint256[]', 'bytes[]', 'bytes[][]'], [[1, 2, 3], ['0xaa', '0xbb'], [['0xaa', '0xbb'], ['0xcc', '0xdd']]]], // Variable types
+      [['tuple(tuple(bytes[][]))'], [[[[['0xaa']]]]]], // Deep nesting
+      [['bytes'], [`0x${'aa'.repeat(64)}`]], // Viem - Error: Slice starting at offset "64" is out-of-bounds (size: 64)
+      [['string'], ['👨‍👨‍👧‍👧🏴‍☠️']], // Viem - characters are incorrectly encoded
+      [['tuple(uint256, uint256)'], [[1, 2]]] // Viem - AbiTypeError: Invalid ABI parameter.
+    ];
+
+    const results = [];
+    for (const [types, objects] of tests) {
+      let ethersResult;
+      try {
+        ethersResult = ethersCoder.encode(types, objects);
+      }
+      catch (e) {
+        ethersResult = e;
+      }
+
+      let viemResult;
+      try {
+        viemResult = encodeAbiParameters(parseAbiParameters(types), objects);
+      }
+      catch (e) {
+        viemResult = e;
+      }
+
+      const match = ethersResult === viemResult;
+
+      results.push({
+        types: types.join(', '),
+        objects: objects.join(', '),
+        ethersResult,
+        viemResult,
+        match
+      })
+    }
+
+    console.table(results);
+    globalThis.results = results;
+  </script>
+</body>
+
+</html>
