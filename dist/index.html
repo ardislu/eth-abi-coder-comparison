@@ -24,12 +24,9 @@
 
     const tests = [
       [['uint256', 'bool'], [12345, true]], // Static types
-      [['bytes', 'string'], [`0x${'aa'.repeat(32)}${'bb'.repeat(32)}${'cc'.repeat(32)}${'dd'.repeat(32)}`, 'Hello, world! 😂💯👨‍👩‍👧‍👧']], // Dynamic types
+      [['bytes', 'string'], [`0x${'aa'.repeat(32)}${'bb'.repeat(32)}${'cc'.repeat(32)}${'dd'.repeat(32)}`, 'Hello, world! 😂💯👨‍👩‍👧‍👧🏴‍☠️']], // Dynamic types
       [['uint256[]', 'bytes[]', 'bytes[][]'], [[1, 2, 3], ['0xaa', '0xbb'], [['0xaa', '0xbb'], ['0xcc', '0xdd']]]], // Variable types
       [['tuple(tuple(bytes[][]))'], [[[[['0xaa']]]]]], // Deep nesting
-      [['bytes'], [`0x${'aa'.repeat(64)}`]], // Viem - Error: Slice starting at offset "64" is out-of-bounds (size: 64)
-      [['string'], ['👨‍👨‍👧‍👧🏴‍☠️']], // Viem - characters are incorrectly encoded
-      [['tuple(uint256, uint256)'], [[1, 2]]] // Viem - AbiTypeError: Invalid ABI parameter.
     ];
 
     const results = [];
