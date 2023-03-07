@@ -26,7 +26,7 @@
       [['uint256', 'bool'], [12345, true]], // Static types
       [['bytes', 'string'], [`0x${'aa'.repeat(32)}${'bb'.repeat(32)}${'cc'.repeat(32)}${'dd'.repeat(32)}`, 'Hello, world! 😂💯👨‍👩‍👧‍👧🏴‍☠️']], // Dynamic types
       [['uint256[]', 'bytes[]', 'bytes[][]'], [[1, 2, 3], ['0xaa', '0xbb'], [['0xaa', '0xbb'], ['0xcc', '0xdd']]]], // Variable types
-      [['tuple(tuple(bytes[][]))'], [[[[['0xaa']]]]]], // Deep nesting
+      [['((bytes[][], uint256), bytes[], bytes[])'], [[[[['0xaa']], 123], ['0xbb'], ['0xcc']]]], // Deep nesting
     ];
 
     const results = [];
